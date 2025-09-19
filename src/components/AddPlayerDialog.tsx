@@ -92,20 +92,60 @@ export function AddPlayerDialog({ open, onOpenChange, onAddPlayer, existingPlaye
             createdAt: new Date(role.createdAt)
           }));
           setAvailableRoles(rolesWithDates);
-          // Set default role to 'Player' if available
-          const playerRole = rolesWithDates.find((r: Role) => r.name === 'Player');
-          if (playerRole) {
-            setRole(playerRole.name);
+          // Set default role to the first available role or 'Player' if it exists
+          if (rolesWithDates.length > 0) {
+            const playerRole = rolesWithDates.find((r: Role) => r.name === 'Player');
+            const defaultRole = playerRole || rolesWithDates[0];
+            setRole(defaultRole.name);
           }
         } catch {
           // Fallback to default roles
           const defaultRoles = [
-            { id: 'admin-role', name: 'Administrator', description: 'Full access', permissions: [], createdAt: new Date(), isDefault: true },
-            { id: 'player-role', name: 'Player', description: 'Basic access', permissions: [], createdAt: new Date(), isDefault: true }
+            { 
+              id: 'admin-role', 
+              name: 'Administrator', 
+              description: 'Full system access and management privileges', 
+              permissions: ['manage_users', 'manage_finances', 'manage_courts', 'view_reports', 'system_settings'], 
+              createdAt: new Date(), 
+              isDefault: true 
+            },
+            { 
+              id: 'player-role', 
+              name: 'Player', 
+              description: 'Standard club member with basic access', 
+              permissions: ['view_profile', 'book_courts', 'view_schedule'], 
+              createdAt: new Date(), 
+              isDefault: true 
+            }
           ];
           setAvailableRoles(defaultRoles);
+          // Save default roles to localStorage if none exist
+          localStorage.setItem('userRoles', JSON.stringify(defaultRoles));
           setRole('Player');
         }
+      } else {
+        // Initialize with default roles if localStorage is empty
+        const defaultRoles = [
+          { 
+            id: 'admin-role', 
+            name: 'Administrator', 
+            description: 'Full system access and management privileges', 
+            permissions: ['manage_users', 'manage_finances', 'manage_courts', 'view_reports', 'system_settings'], 
+            createdAt: new Date(), 
+            isDefault: true 
+          },
+          { 
+            id: 'player-role', 
+            name: 'Player', 
+            description: 'Standard club member with basic access', 
+            permissions: ['view_profile', 'book_courts', 'view_schedule'], 
+            createdAt: new Date(), 
+            isDefault: true 
+          }
+        ];
+        setAvailableRoles(defaultRoles);
+        localStorage.setItem('userRoles', JSON.stringify(defaultRoles));
+        setRole('Player');
       }
     };
 

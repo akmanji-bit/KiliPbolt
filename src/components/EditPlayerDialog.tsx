@@ -81,11 +81,49 @@ const EditPlayerDialog: React.FC<EditPlayerDialogProps> = ({
         } catch {
           // Fallback to default roles
           const defaultRoles = [
-            { id: 'admin-role', name: 'Administrator', description: 'Full access', permissions: [], createdAt: new Date(), isDefault: true },
-            { id: 'player-role', name: 'Player', description: 'Basic access', permissions: [], createdAt: new Date(), isDefault: true }
+            { 
+              id: 'admin-role', 
+              name: 'Administrator', 
+              description: 'Full system access and management privileges', 
+              permissions: ['manage_users', 'manage_finances', 'manage_courts', 'view_reports', 'system_settings'], 
+              createdAt: new Date(), 
+              isDefault: true 
+            },
+            { 
+              id: 'player-role', 
+              name: 'Player', 
+              description: 'Standard club member with basic access', 
+              permissions: ['view_profile', 'book_courts', 'view_schedule'], 
+              createdAt: new Date(), 
+              isDefault: true 
+            }
           ];
           setAvailableRoles(defaultRoles);
+          // Save default roles to localStorage if parsing failed
+          localStorage.setItem('userRoles', JSON.stringify(defaultRoles));
         }
+      } else {
+        // Initialize with default roles if localStorage is empty
+        const defaultRoles = [
+          { 
+            id: 'admin-role', 
+            name: 'Administrator', 
+            description: 'Full system access and management privileges', 
+            permissions: ['manage_users', 'manage_finances', 'manage_courts', 'view_reports', 'system_settings'], 
+            createdAt: new Date(), 
+            isDefault: true 
+          },
+          { 
+            id: 'player-role', 
+            name: 'Player', 
+            description: 'Standard club member with basic access', 
+            permissions: ['view_profile', 'book_courts', 'view_schedule'], 
+            createdAt: new Date(), 
+            isDefault: true 
+          }
+        ];
+        setAvailableRoles(defaultRoles);
+        localStorage.setItem('userRoles', JSON.stringify(defaultRoles));
       }
     };
 
