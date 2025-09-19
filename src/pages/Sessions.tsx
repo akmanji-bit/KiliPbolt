@@ -1,10 +1,10 @@
-const Bookings = () => {
+const Sessions = () => {
   return (
     <div className="px-6 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Bookings</h1>
+        <h1 className="text-4xl font-bold text-foreground mb-2">Sessions</h1>
         <p className="text-lg text-muted-foreground">
-          Manage court reservations and facility bookings
+          Schedule and manage training sessions and matches
         </p>
       </div>
       
@@ -17,4 +17,4 @@ const Bookings = () => {
   );
 };
 
-export default Bookings;
+export default Sessions;
